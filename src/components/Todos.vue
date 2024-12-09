@@ -10,26 +10,32 @@ interface Task {
   etat: string
 }
 
-const items = ref<Task[]>([
-  {
-    title: 'Finir les cours',
-    description: "Vite parce que wallah j'en peux plus",
-    date: '2024-11-28',
-    etat: 'à faire',
-  },
-  {
-    title: 'Aller à la patinoire',
-    description: 'Sortie entre potes',
-    date: '2024-11-28',
-    etat: 'à faire',
-  },
-  {
-    title: 'Aller au bar',
-    description: 'Objectif ne jamais en sortir',
-    date: '2024-11-28',
-    etat: 'terminée',
-  },
-])
+const items = ref<Task[]>([])
+
+const currentFilter = ref<'all' | 'todo' | 'done'>('all')
+
+const filteredTasks = computed(() => {
+  switch (currentFilter.value) {
+    case 'todo':
+      return items.value.filter((task) => task.etat === 'à faire')
+    case 'done':
+      return items.value.filter((task) => task.etat === 'terminée')
+    default:
+      return items.value
+  }
+})
+
+function setFilter(filter: 'all' | 'todo' | 'done') {
+  currentFilter.value = filter
+}
+
+function deleteAllTasks() {
+  items.value.splice(0, items.value.length)
+}
+
+function deleteCompletedTasks() {
+  items.value = items.value.filter((task) => task.etat !== 'terminée')
+}
 
 function handleAddTask(newTask: Task) {
   items.value.push({
@@ -38,8 +44,15 @@ function handleAddTask(newTask: Task) {
   })
 }
 
-const remainingTasksCount = computed(() =>
-  items.value.filter(task => task.etat === 'à faire').length
+function handleUpdateTaskStatus(index: number, etat: string) {
+  const taskIndex = items.value.findIndex((_, i) => i === index)
+  if (taskIndex !== -1) {
+    items.value[taskIndex].etat = etat
+  }
+}
+
+const nbTachesRestantes = computed(
+  () => items.value.filter((task) => task.etat === 'à faire').length,
 )
 </script>
 
@@ -47,18 +60,37 @@ const remainingTasksCount = computed(() =>
   <div class="todos-container">
     <h1 class="title">Liste des tâches</h1>
 
+    <div class="filters">
+      <button :class="{ active: currentFilter === 'all' }" @click="setFilter('all')">
+        Toutes les tâches
+      </button>
+      <button :class="{ active: currentFilter === 'todo' }" @click="setFilter('todo')">
+        Tâches à faire
+      </button>
+      <button :class="{ active: currentFilter === 'done' }" @click="setFilter('done')">
+        Tâches faites
+      </button>
+    </div>
+
     <div class="tasks-wrapper">
       <section class="new-task-section">
         <NewTask :tasks="items" @add-task="handleAddTask" />
       </section>
 
       <section class="tasks-section">
-        <TodoComponent :tasks="items" />
+        <TodoComponent
+          :tasks="filteredTasks"
+          @update-task-status="handleUpdateTaskStatus"
+        />
       </section>
     </div>
 
-    <footer class="footer">
-      <span>{{ remainingTasksCount }} tâche(s) restante(s) à faire</span>
+    <footer v-if="items.length" class="footer">
+      <button class="delete-all" @click="deleteAllTasks">Supprimer tout</button>
+      <button class="delete-all" @click="deleteCompletedTasks">
+        Supprimer les terminées
+      </button>
+      <span>{{ nbTachesRestantes }} tâche(s) restante(s) à faire</span>
     </footer>
   </div>
 </template>
@@ -81,6 +113,31 @@ const remainingTasksCount = computed(() =>
   font-size: 2rem;
   color: #ffffff;
   margin-bottom: 20px;
+}
+
+.filters {
+  display: flex;
+  justify-content: center;
+  gap: 10px;
+  margin-bottom: 20px;
+}
+
+.filters button {
+  padding: 10px 15px;
+  background: #2c2c2c;
+  color: #ffffff;
+  border: none;
+  border-radius: 5px;
+  cursor: pointer;
+}
+
+.filters button.active {
+  background: #007bff;
+  font-weight: bold;
+}
+
+.filters button:hover {
+  background: #1a1a1a;
 }
 
 .tasks-wrapper {
@@ -110,5 +167,19 @@ const remainingTasksCount = computed(() =>
   padding: 10px;
   border-radius: 8px;
   font-size: 1rem;
+}
+
+.delete-all {
+  padding: 10px 15px;
+  margin-right: 10px;
+  background: #ff0000;
+  color: #ffffff;
+  border: none;
+  border-radius: 5px;
+  cursor: pointer;
+}
+
+.delete-all:hover {
+  background: #cc0000;
 }
 </style>
