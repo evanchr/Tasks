@@ -1,5 +1,5 @@
 <script setup lang="ts">
-import TheWelcome from '../components/TheWelcome.vue'
+import NavBar from '@/components/NavBar.vue'
 import Todos from '../components/Todos.vue'
 </script>
 
@@ -8,3 +8,9 @@ import Todos from '../components/Todos.vue'
     <Todos />
   </main>
 </template>
+
+<style scoped>
+main {
+  margin-top: 60px;
+}
+</style>

@@ -1,61 +1,26 @@
-# tp-vuejs
+# Todo List - Vue.js
 
-This template should help get you started developing with Vue 3 in Vite.
+Bienvenue dans le projet **Todo List**, une application web simple et intuitive construite avec Vue.js. Ce site permet aux utilisateurs d'ajouter, d'afficher et de modifier leurs tâches facilement.
 
-## Recommended IDE Setup
+## Installation
 
-[VSCode](https://code.visualstudio.com/) + [Volar](https://marketplace.visualstudio.com/items?itemName=Vue.volar) (and disable Vetur).
+1. Clonez le dépôt sur votre machine locale :
 
-## Type Support for `.vue` Imports in TS
+   ```bash
+   git clone git@github.com:evanchr/site-taskslist.git
+   ```
 
-TypeScript cannot handle type information for `.vue` imports by default, so we replace the `tsc` CLI with `vue-tsc` for type checking. In editors, we need [Volar](https://marketplace.visualstudio.com/items?itemName=Vue.volar) to make the TypeScript language service aware of `.vue` types.
+2. Installez les dépendances du projet :
 
-## Customize configuration
+   ```bash
+   npm install
 
-See [Vite Configuration Reference](https://vite.dev/config/).
+## Lancement du projet
 
-## Project Setup
+Pour démarrer le projet en mode développement :
 
-```sh
-npm install
-```
-
-### Compile and Hot-Reload for Development
-
-```sh
+```bash
 npm run dev
 ```
 
-### Type-Check, Compile and Minify for Production
-
-```sh
-npm run build
-```
-
-### Run Unit Tests with [Vitest](https://vitest.dev/)
-
-```sh
-npm run test:unit
-```
-
-### Run End-to-End Tests with [Cypress](https://www.cypress.io/)
-
-```sh
-npm run test:e2e:dev
-```
-
-This runs the end-to-end tests against the Vite development server.
-It is much faster than the production build.
-
-But it's still recommended to test the production build with `test:e2e` before deploying (e.g. in CI environments):
-
-```sh
-npm run build
-npm run test:e2e
-```
-
-### Lint with [ESLint](https://eslint.org/)
-
-```sh
-npm run lint
-```
+Le site sera accessible à l'adresse suivante : [http://localhost:8080](http://localhost:8080).

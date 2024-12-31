@@ -51,6 +51,13 @@ function handleUpdateTaskStatus(index: number, etat: string) {
   }
 }
 
+function handleUpdateTaskTitle(index: number, newTitle: string) {
+  const taskIndex = items.value.findIndex((_, i) => i === index)
+  if (taskIndex !== -1) {
+    items.value[taskIndex].title = newTitle
+  }
+}
+
 const nbTachesRestantes = computed(
   () => items.value.filter((task) => task.etat === 'à faire').length,
 )
@@ -81,15 +88,14 @@ const nbTachesRestantes = computed(
         <TodoComponent
           :tasks="filteredTasks"
           @update-task-status="handleUpdateTaskStatus"
+          @update-task-title="handleUpdateTaskTitle"
         />
       </section>
     </div>
 
-    <footer v-if="items.length" class="footer">
+    <footer v-show="nbTachesRestantes > 0" class="footer">
       <button class="delete-all" @click="deleteAllTasks">Supprimer tout</button>
-      <button class="delete-all" @click="deleteCompletedTasks">
-        Supprimer les terminées
-      </button>
+      <button class="delete-all" @click="deleteCompletedTasks">Supprimer les terminées</button>
       <span>{{ nbTachesRestantes }} tâche(s) restante(s) à faire</span>
     </footer>
   </div>
