@@ -1,5 +1,4 @@
 <script setup lang="ts">
-import NavBar from '@/components/NavBar.vue'
 import Todos from '../components/Todos.vue'
 </script>
 
